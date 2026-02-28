@@ -1,0 +1,1311 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Arial', 'DM Sans', sans-serif;
+}
+
+/* ── CSS Variables ───────────────────────────── */
+.page-container {
+  --blue-deep:    #0d1f6e;
+  --blue-mid:     #1a42cc;
+  --blue-vivid:   #2e5de8;
+  --blue-light:   #6b9aff;
+  --blue-glow:    rgba(46, 93, 232, 0.35);
+
+  --orange-deep:  #8b2c00;
+  --orange-mid:   #d94a07;
+  --orange-vivid: #f5620f;
+  --orange-light: #ff9d6e;
+  --orange-glow:  rgba(245, 98, 15, 0.35);
+
+  --neutral-950:  #07090f;
+  --neutral-900:  #0e1219;
+  --neutral-800:  #161c29;
+  --neutral-700:  #1f2840;
+  --neutral-500:  #4a5578;
+  --neutral-400:  #6b7a9f;
+  --neutral-200:  #c8cfdf;
+  --neutral-100:  #e8ebf2;
+  --neutral-50:   #f5f6fa;
+  --white:        #ffffff;
+
+  --gradient-brand:       linear-gradient(135deg, var(--blue-vivid) 0%, var(--orange-vivid) 100%);
+  --gradient-brand-soft:  linear-gradient(135deg, #dae5ff 0%, #ffeadc 100%);
+  --gradient-surface:     linear-gradient(145deg, #ffffff 0%, #f8faff 100%);
+
+  --shadow-card:  0 4px 6px -1px rgba(13, 31, 110, 0.04),
+                  0 20px 50px -10px rgba(13, 31, 110, 0.12),
+                  0 1px 0 0 rgba(255,255,255,0.9) inset;
+  --shadow-btn:   0 4px 14px rgba(46, 93, 232, 0.4), 0 2px 6px rgba(245, 98, 15, 0.25);
+  --shadow-focus: 0 0 0 3px rgba(46, 93, 232, 0.18);
+
+  --radius-card:  28px;
+  --radius-field: 14px;
+  --radius-chip:  100px;
+  --radius-btn:   16px;
+
+  --transition:   0.28s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Page Container ──────────────────────────── */
+.page-container {
+  min-height: 100vh;
+  padding: 3.5rem 1.5rem 5rem;
+  background-color: #f2f4fb;
+  background-image:
+    radial-gradient(ellipse 900px 600px at 80% -10%, rgba(46, 93, 232, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 500px at -10% 80%, rgba(245, 98, 15, 0.09) 0%, transparent 65%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%232e5de8' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ── Accent Blobs ────────────────────────────── */
+.page-container::before,
+.page-container::after {
+  content: '';
+  position: fixed;
+  pointer-events: none;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.6;
+  animation: blobDrift 18s ease-in-out infinite alternate;
+}
+.page-container::before {
+  width: 600px; height: 600px;
+  background: radial-gradient(circle, rgba(46, 93, 232, 0.18), transparent 70%);
+  top: -150px; right: -100px;
+}
+.page-container::after {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(245, 98, 15, 0.14), transparent 70%);
+  bottom: -100px; left: -80px;
+  animation-delay: -9s;
+  animation-direction: alternate-reverse;
+}
+@keyframes blobDrift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(30px, 40px) scale(1.08); }
+}
+
+/* ── Theme Toggle ────────────────────────────── */
+.theme-toggle-container {
+  max-width: 960px;
+  margin: 0 auto 2rem;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  z-index: 10;
+}
+
+.theme-toggle-container ::ng-deep .mat-mdc-slide-toggle {
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  backdrop-filter: blur(16px) saturate(180%);
+  padding: 10px 20px 10px 14px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(46, 93, 232, 0.18);
+  box-shadow: 
+    0 4px 16px rgba(13, 31, 110, 0.12),
+    0 1px 3px rgba(0, 0, 0, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  transition: all var(--transition);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-toggle-container ::ng-deep .mat-mdc-slide-toggle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, transparent 0%, rgba(46, 93, 232, 0.03) 100%);
+  opacity: 0;
+  transition: opacity var(--transition);
+  pointer-events: none;
+}
+
+.theme-toggle-container ::ng-deep .mat-mdc-slide-toggle:hover {
+  border-color: rgba(46, 93, 232, 0.35);
+  box-shadow: 
+    0 6px 24px rgba(46, 93, 232, 0.18),
+    0 2px 8px rgba(0, 0, 0, 0.1),
+    inset 0 1px 1px rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+.theme-toggle-container ::ng-deep .mat-mdc-slide-toggle:hover::before {
+  opacity: 1;
+}
+
+.theme-toggle-container ::ng-deep .mat-mdc-slide-toggle .mat-icon {
+  font-size: 18px;
+  width: 18px;
+  height: 18px;
+  transition: all var(--transition);
+}
+
+/* Switch track & handle refinement */
+.theme-toggle-container ::ng-deep .mdc-switch {
+  margin-right: 6px;
+}
+
+.theme-toggle-container ::ng-deep .mdc-switch__track {
+  height: 28px;
+  border-radius: 100px;
+  border: 1.5px solid rgba(46, 93, 232, 0.2);
+}
+
+.theme-toggle-container ::ng-deep .mdc-switch__track::after {
+  background: linear-gradient(135deg, #dae5ff, #e0edff) !important;
+  border-radius: 100px;
+}
+
+.theme-toggle-container ::ng-deep .mdc-switch__handle {
+  width: 24px;
+  height: 24px;
+}
+
+.theme-toggle-container ::ng-deep .mdc-switch__handle::after {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.theme-toggle-container ::ng-deep .mat-mdc-slide-toggle-checked .mdc-switch__track::after {
+  background: linear-gradient(135deg, var(--blue-vivid), var(--blue-mid)) !important;
+}
+
+.theme-toggle-container ::ng-deep .mat-mdc-slide-toggle-checked .mdc-switch__handle::after {
+  background: white !important;
+  box-shadow: 0 3px 12px rgba(46, 93, 232, 0.4), 0 1px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ── Page Header ─────────────────────────────── */
+.page-header {
+  text-align: center;
+  margin-bottom: 3.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.header-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  background: var(--gradient-brand);
+  border-radius: 24px;
+  margin-bottom: 1.75rem;
+  box-shadow:
+    0 0 0 8px rgba(46, 93, 232, 0.1),
+    0 0 0 16px rgba(245, 98, 15, 0.05),
+    var(--shadow-btn),
+    0 20px 40px rgba(13, 31, 110, 0.18);
+  animation: iconFloat 5s ease-in-out infinite;
+  position: relative;
+}
+.header-icon::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 25px;
+  padding: 1px;
+  background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.1));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+}
+@keyframes iconFloat {
+  0%, 100% { transform: translateY(0) rotate(-1deg); }
+  50%       { transform: translateY(-10px) rotate(1deg); }
+}
+.header-icon mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  color: white;
+}
+
+.page-title {
+  font-family: 'Syne', sans-serif;
+  font-size: 3.25rem;
+  font-weight: 800;
+  color: var(--neutral-950);
+  margin-bottom: 0.625rem;
+  letter-spacing: -1.5px;
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--blue-deep) 30%, var(--orange-vivid) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.page-subtitle {
+  font-size: 1.125rem;
+  color: var(--neutral-500);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+
+/* ── Progress Indicator ────────── */
+.page-header::after {
+  content: '● ● ●';
+  display: block;
+  font-size: 8px;
+  letter-spacing: 10px;
+  color: var(--blue-vivid);
+  margin-top: 1.5rem;
+  opacity: 0.45;
+}
+
+/* ── Form Card ───────────────────────────────── */
+.form-card {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0;
+  border-radius: var(--radius-card);
+  background: var(--gradient-surface);
+  box-shadow: var(--shadow-card);
+  position: relative;
+  z-index: 1;
+  border: 1px solid rgba(46, 93, 232, 0.08);
+  overflow: hidden;
+}
+
+/* Card top accent bar */
+.form-card::before {
+  content: '';
+  display: block;
+  height: 4px;
+  background: var(--gradient-brand);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+::ng-deep .form-card .mat-mdc-card-content {
+  padding: 3.5rem !important;
+}
+
+/* ── Form Sections ───────────────────────────── */
+.form-section {
+  margin-bottom: 3rem;
+  animation: sectionReveal 0.5s ease both;
+}
+.form-section:nth-child(1) { animation-delay: 0.05s; }
+.form-section:nth-child(2) { animation-delay: 0.10s; }
+.form-section:nth-child(3) { animation-delay: 0.15s; }
+.form-section:nth-child(4) { animation-delay: 0.20s; }
+.form-section:nth-child(5) { animation-delay: 0.25s; }
+@keyframes sectionReveal {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.form-section:last-of-type { margin-bottom: 0; }
+
+/* Section Header */
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  font-family: 'Syne', sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--neutral-950);
+  margin-bottom: 2rem;
+  padding: 1rem 1.25rem;
+  border-radius: 14px;
+  background: var(--gradient-brand-soft);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  position: relative;
+  overflow: hidden;
+}
+.section-title::before {
+  content: none; 
+}
+.section-title::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 60%, rgba(46, 93, 232, 0.04));
+  pointer-events: none;
+}
+.section-title mat-icon {
+  font-size: 22px;
+  width: 22px;
+  height: 22px;
+  color: var(--blue-vivid);
+  flex-shrink: 0;
+}
+
+/* Section number badges */
+.section-title .section-badge {
+  margin-left: auto;
+  font-family: 'Syne', sans-serif;
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--blue-vivid);
+  opacity: 0.4;
+  letter-spacing: 0.08em;
+}
+
+/* ── Form Fields ─────────────────────────────── */
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section mat-form-field {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+/* Field: outline color refinement */
+::ng-deep .mat-mdc-outlined .mdc-notched-outline__leading,
+::ng-deep .mat-mdc-outlined .mdc-notched-outline__notch,
+::ng-deep .mat-mdc-outlined .mdc-notched-outline__trailing {
+  border-color: rgba(107, 122, 159, 0.28) !important;
+  transition: border-color var(--transition), box-shadow var(--transition) !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper {
+  border-radius: var(--radius-field) !important;
+  transition: box-shadow var(--transition), background var(--transition), transform 0.22s ease !important;
+  background: rgba(255,255,255,0.9) !important;
+}
+
+::ng-deep .mat-mdc-form-field:hover .mat-mdc-text-field-wrapper {
+  box-shadow: 0 3px 14px rgba(46, 93, 232, 0.1) !important;
+  transform: translateY(-1px);
+}
+::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__trailing {
+  border-color: rgba(46, 93, 232, 0.35) !important;
+}
+
+::ng-deep .mdc-text-field--focused .mdc-notched-outline__leading,
+::ng-deep .mdc-text-field--focused .mdc-notched-outline__notch,
+::ng-deep .mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: var(--blue-vivid) !important;
+  border-width: 2px !important;
+}
+::ng-deep .mdc-text-field--focused .mat-mdc-text-field-wrapper {
+  box-shadow: var(--shadow-focus) !important;
+  background: #ffffff !important;
+  transform: translateY(0);
+}
+
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  margin-top: 8px !important;
+  min-height: 20px !important;
+}
+::ng-deep .mat-mdc-form-field-bottom-align::before {
+  display: none !important;
+}
+
+/* Label */
+::ng-deep .mat-mdc-floating-label {
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+  color: var(--neutral-400) !important;
+}
+::ng-deep .mdc-text-field--focused .mat-mdc-floating-label {
+  color: var(--blue-vivid) !important;
+  font-weight: 600 !important;
+}
+
+/* Input text */
+::ng-deep .mat-mdc-input-element {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 15px !important;
+  color: var(--neutral-900) !important;
+}
+::ng-deep .mat-mdc-input-element::placeholder {
+  color: var(--neutral-400) !important;
+  font-weight: 400 !important;
+}
+
+/* Icons */
+::ng-deep .mat-mdc-form-field-icon-prefix {
+  color: var(--neutral-400) !important;
+  padding-right: 8px !important;
+  transition: color var(--transition), transform 0.22s ease !important;
+}
+::ng-deep .mdc-text-field--focused .mat-mdc-form-field-icon-prefix,
+::ng-deep .mdc-text-field--focused .mat-icon {
+  color: var(--blue-vivid) !important;
+  transform: scale(1.08);
+}
+
+::ng-deep .mat-mdc-form-field:hover .mat-mdc-form-field-icon-prefix {
+  color: var(--blue-vivid) !important;
+}
+
+/* Select arrow */
+::ng-deep .mat-mdc-form-field.mat-focused .mat-mdc-select-arrow {
+  color: var(--blue-vivid) !important;
+}
+::ng-deep .mat-mdc-select-arrow svg {
+  margin-left: -8px !important;
+}
+::ng-deep .mat-mdc-select-value {
+  font-family: 'DM Sans', sans-serif !important;
+  color: var(--neutral-900) !important;
+}
+
+/* ── Interests Section ───────────────────────── */
+.interests-container {
+  padding: 1.75rem;
+  background: rgba(255,255,255,0.95);
+  border-radius: 18px;
+  border: 1.5px solid rgba(107, 122, 159, 0.2);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  position: relative;
+}
+.interests-container:hover {
+  border-color: rgba(46, 93, 232, 0.3);
+  box-shadow: 0 4px 18px rgba(46, 93, 232, 0.08);
+}
+
+::ng-deep .mat-mdc-chip-listbox {
+  gap: 10px !important;
+  flex-wrap: wrap !important;
+  display: flex !important;
+}
+
+::ng-deep .mat-mdc-chip {
+  border-radius: var(--radius-chip) !important;
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 13.5px !important;
+  padding: 8px 16px !important;
+  border: 1.5px solid rgba(107, 122, 159, 0.22) !important;
+  background: white !important;
+  color: var(--neutral-700) !important;
+  transition: all 0.22s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  cursor: pointer !important;
+  box-shadow: 0 1px 3px rgba(13, 31, 110, 0.05) !important;
+}
+::ng-deep .mat-mdc-chip:hover:not(.mdc-evolution-chip--selected) {
+  border-color: var(--blue-vivid) !important;
+  color: var(--blue-vivid) !important;
+  background: rgba(46, 93, 232, 0.05) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+  box-shadow: 0 6px 16px rgba(46, 93, 232, 0.18) !important;
+}
+::ng-deep .mat-mdc-chip-option.mdc-evolution-chip--selected {
+  background: var(--gradient-brand) !important;
+  color: white !important;
+  border-color: transparent !important;
+  box-shadow: 0 4px 14px rgba(46, 93, 232, 0.3) !important;
+  transform: translateY(-1px) scale(1.02) !important;
+}
+::ng-deep .mat-mdc-chip:active {
+  transform: translateY(0) scale(0.98) !important;
+  transition: transform 0.1s ease !important;
+}
+::ng-deep .mat-mdc-chip-action-label {
+  font-weight: inherit !important;
+}
+
+/* ── Error Message ───────────────────────────── */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #c0392b;
+  font-size: 13px;
+  margin-top: 0.625rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  background: rgba(192, 57, 43, 0.06);
+  border-radius: 10px;
+  border: 1px solid rgba(192, 57, 43, 0.15);
+  line-height: 1.5;
+}
+.error-message::before {
+  content: '⚠';
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+/* ── Terms Section ───────────────────────────── */
+.terms-section {
+  border-top: 1px solid rgba(107, 122, 159, 0.12);
+  padding-top: 2.5rem;
+  margin-top: 3rem;
+}
+
+.terms-checkbox {
+  margin-bottom: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+::ng-deep .mat-mdc-checkbox label {
+  font-family: 'DM Sans', sans-serif !important;
+  font-size: 14.5px;
+  font-weight: 400;
+  color: var(--neutral-500);
+}
+
+::ng-deep .mdc-checkbox__background {
+  border-color: rgba(107, 122, 159, 0.4) !important;
+  border-width: 1.5px !important;
+  border-radius: 6px !important;
+  transition: all var(--transition) !important;
+}
+::ng-deep .mat-mdc-checkbox:hover .mdc-checkbox__background {
+  border-color: var(--blue-vivid) !important;
+  box-shadow: 0 2px 8px rgba(46, 93, 232, 0.15) !important;
+  transform: scale(1.05);
+}
+::ng-deep .mat-mdc-checkbox.mat-mdc-checkbox-checked .mdc-checkbox__background {
+  background: var(--blue-vivid) !important;
+  border-color: var(--blue-vivid) !important;
+  box-shadow: 0 2px 8px rgba(46, 93, 232, 0.3) !important;
+}
+::ng-deep .mat-mdc-checkbox.mat-mdc-checkbox-checked:hover .mdc-checkbox__background {
+  box-shadow: 0 4px 12px rgba(46, 93, 232, 0.4) !important;
+  transform: scale(1.05);
+}
+
+.terms-link {
+  color: var(--blue-vivid);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.2s ease;
+  border-bottom: 1px solid rgba(46, 93, 232, 0.25);
+  padding-bottom: 1px;
+}
+.terms-link:hover {
+  color: var(--orange-vivid);
+  border-bottom-color: rgba(245, 98, 15, 0.4);
+}
+
+/* ── Submit Button ───────────────────────────── */
+.button-container {
+  display: flex;
+  justify-content: center;
+}
+
+.submit-button {
+  position: relative;
+  min-width: 280px;
+  height: 62px;
+  font-family: 'Syne', sans-serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  border-radius: var(--radius-btn) !important;
+  color: white !important;
+  background: var(--gradient-brand) !important;
+  box-shadow: var(--shadow-btn), 0 1px 0 rgba(255,255,255,0.2) inset !important;
+  transition: all var(--transition) !important;
+  overflow: hidden;
+}
+
+/* shimmer */
+.submit-button::before {
+  content: '';
+  position: absolute;
+  top: -2px; left: -110%;
+  width: 80%; height: calc(100% + 4px);
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,0.28), transparent);
+  transform: skewX(-15deg);
+  transition: left 0.7s ease;
+}
+.submit-button:hover:not([disabled])::before {
+  left: 130%;
+}
+.submit-button:hover:not([disabled]) {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 8px 28px rgba(46, 93, 232, 0.45), 0 4px 12px rgba(245, 98, 15, 0.3) !important;
+}
+.submit-button:active:not([disabled]) {
+  transform: translateY(0) !important;
+  box-shadow: var(--shadow-btn) !important;
+}
+.submit-button[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.submit-button mat-icon {
+  margin-right: 10px;
+  font-size: 20px;
+}
+
+/* ── Slide Toggle ─────────────────────────────── */
+::ng-deep .mat-mdc-slide-toggle {
+  font-family: 'DM Sans', sans-serif !important;
+  font-weight: 500 !important;
+}
+::ng-deep .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__track::after {
+  background: var(--blue-vivid) !important;
+  opacity: 1 !important;
+}
+::ng-deep .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked .mdc-switch__handle::after {
+  background: white !important;
+}
+
+/* ── Form Layout ─────────────────────────────── */
+::ng-deep .mat-mdc-form-field {
+  font-size: 15px;
+}
+::ng-deep .mat-mdc-form-field-focus-overlay {
+  background-color: transparent !important;
+}
+
+/* ═══════════════════════════════════════════════
+   DARK THEME
+   ═══════════════════════════════════════════════ */
+.page-container.dark-theme {
+  --gradient-surface: linear-gradient(145deg, #111827 0%, #0f172a 100%);
+  background-color: #080d17;
+  background-image:
+    radial-gradient(ellipse 900px 600px at 80% -10%, rgba(46, 93, 232, 0.2) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 500px at -10% 80%, rgba(245, 98, 15, 0.15) 0%, transparent 65%);
+}
+
+.page-container.dark-theme .page-title {
+  background: linear-gradient(135deg, #7fa8ff 20%, var(--orange-light) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.page-container.dark-theme .page-subtitle {
+  color: var(--neutral-400);
+}
+
+.page-container.dark-theme .form-card {
+  background: linear-gradient(145deg, #111827 0%, #0f172a 100%);
+  border-color: rgba(46, 93, 232, 0.2);
+  box-shadow:
+    0 4px 6px rgba(0,0,0,0.3),
+    0 20px 50px rgba(0,0,0,0.4),
+    0 0 0 1px rgba(255,255,255,0.04) inset;
+}
+
+.page-container.dark-theme .section-title {
+  color: var(--neutral-100);
+  background: linear-gradient(135deg, rgba(46, 93, 232, 0.15) 0%, rgba(245, 98, 15, 0.1) 100%);
+}
+.page-container.dark-theme .section-title mat-icon {
+  color: var(--blue-light);
+}
+
+.page-container.dark-theme .interests-container {
+  background: rgba(255,255,255,0.03);
+  border-color: rgba(107, 122, 159, 0.18);
+}
+.page-container.dark-theme .interests-container:hover {
+  border-color: rgba(46, 93, 232, 0.4);
+  box-shadow: 0 4px 18px rgba(46, 93, 232, 0.15);
+}
+
+.page-container.dark-theme .terms-section {
+  border-top-color: rgba(255,255,255,0.08);
+}
+.page-container.dark-theme .terms-link {
+  color: var(--blue-light);
+  border-bottom-color: rgba(107, 154, 255, 0.3);
+}
+.page-container.dark-theme .terms-link:hover {
+  color: var(--orange-light);
+}
+
+.page-container.dark-theme ::ng-deep .mat-mdc-text-field-wrapper {
+  background: rgba(255,255,255,0.04) !important;
+}
+.page-container.dark-theme ::ng-deep .mdc-text-field--focused .mat-mdc-text-field-wrapper {
+  background: rgba(255,255,255,0.07) !important;
+  box-shadow: 0 0 0 3px rgba(46, 93, 232, 0.22) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-outlined .mdc-notched-outline__leading,
+.page-container.dark-theme ::ng-deep .mat-mdc-outlined .mdc-notched-outline__notch,
+.page-container.dark-theme ::ng-deep .mat-mdc-outlined .mdc-notched-outline__trailing {
+  border-color: rgba(107, 122, 159, 0.25) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__leading,
+.page-container.dark-theme ::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__notch,
+.page-container.dark-theme ::ng-deep .mat-mdc-form-field:hover .mdc-notched-outline__trailing {
+  border-color: rgba(107, 154, 255, 0.4) !important;
+}
+.page-container.dark-theme ::ng-deep .mdc-text-field--focused .mdc-notched-outline__leading,
+.page-container.dark-theme ::ng-deep .mdc-text-field--focused .mdc-notched-outline__notch,
+.page-container.dark-theme ::ng-deep .mdc-text-field--focused .mdc-notched-outline__trailing {
+  border-color: var(--blue-light) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-floating-label {
+  color: var(--neutral-400) !important;
+}
+.page-container.dark-theme ::ng-deep .mdc-text-field--focused .mat-mdc-floating-label {
+  color: var(--blue-light) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-input-element {
+  color: var(--neutral-100) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-select-value {
+  color: var(--neutral-100) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-form-field-icon-prefix,
+.page-container.dark-theme ::ng-deep .mat-mdc-form-field-icon-suffix {
+  color: var(--neutral-400) !important;
+}
+.page-container.dark-theme ::ng-deep .mdc-text-field--focused .mat-mdc-form-field-icon-prefix {
+  color: var(--blue-light) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-chip {
+  background: rgba(255,255,255,0.06) !important;
+  border-color: rgba(107, 122, 159, 0.2) !important;
+  color: var(--neutral-200) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-chip:hover:not(.mdc-evolution-chip--selected) {
+  border-color: var(--blue-light) !important;
+  color: var(--blue-light) !important;
+  background: rgba(46, 93, 232, 0.12) !important;
+}
+.page-container.dark-theme ::ng-deep .mat-mdc-checkbox label {
+  color: var(--neutral-400) !important;
+}
+.page-container.dark-theme .error-message {
+  background: rgba(192, 57, 43, 0.1);
+  border-color: rgba(192, 57, 43, 0.25);
+  color: #f1998e;
+}
+.page-container.dark-theme .theme-toggle-container ::ng-deep .mat-mdc-slide-toggle {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(107, 154, 255, 0.25);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  color: var(--neutral-100);
+}
+
+.page-container.dark-theme .theme-toggle-container ::ng-deep .mat-mdc-slide-toggle:hover {
+  border-color: rgba(107, 154, 255, 0.4);
+  box-shadow: 
+    0 6px 24px rgba(46, 93, 232, 0.25),
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+}
+
+.page-container.dark-theme .theme-toggle-container ::ng-deep .mdc-switch__track::after {
+  background: linear-gradient(135deg, rgba(46, 93, 232, 0.25), rgba(46, 93, 232, 0.15)) !important;
+}
+
+.page-container.dark-theme .theme-toggle-container ::ng-deep .mat-mdc-slide-toggle-checked .mdc-switch__track::after {
+  background: linear-gradient(135deg, var(--blue-light), var(--blue-vivid)) !important;
+}
+
+/* Dark theme dropdown arrow */
+.page-container.dark-theme ::ng-deep .mat-mdc-select-arrow {
+  border-right-color: var(--neutral-400) !important;
+  border-bottom-color: var(--neutral-400) !important;
+}
+
+.page-container.dark-theme ::ng-deep .mat-mdc-form-field:hover .mat-mdc-select-arrow {
+  border-right-color: var(--blue-light) !important;
+  border-bottom-color: var(--orange-light) !important;
+  box-shadow: 
+    0 0 8px rgba(107, 154, 255, 0.4),
+    0 0 4px rgba(255, 157, 110, 0.3) !important;
+}
+
+.page-container.dark-theme ::ng-deep .mat-mdc-select.mat-mdc-select-open .mat-mdc-select-arrow {
+  border-right-color: var(--blue-light) !important;
+  border-bottom-color: var(--blue-light) !important;
+  box-shadow: 
+    0 0 10px rgba(107, 154, 255, 0.5),
+    0 0 5px rgba(255, 157, 110, 0.35) !important;
+}
+
+.page-container.dark-theme ::ng-deep .mat-datepicker-toggle {
+  color: var(--neutral-400) !important;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 960px) {
+  ::ng-deep .form-card .mat-mdc-card-content {
+    padding: 2.5rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-container { padding: 2rem 1rem 4rem; }
+  .page-title { font-size: 2.5rem; letter-spacing: -1px; }
+  .page-subtitle { font-size: 1rem; }
+  ::ng-deep .form-card .mat-mdc-card-content { padding: 2rem 1.5rem !important; }
+  .form-card { border-radius: 22px; }
+  .title { font-size: 0.875rem; padding: 0.875rem 1rem; }
+  .header-icon { width: 80px; height: 80px; }
+  .header-icon mat-icon { font-size: 40px; width: 40px; height: 40px; }
+  .submit-button { min-width: 100%; }
+}
+
+@media (max-width: 480px) {
+  .page-container { padding: 1.5rem 0.75rem 3rem; }
+  .page-title { font-size: 2rem; }
+  ::ng-deep .form-card .mat-mdc-card-content { padding: 1.5rem 1.125rem !important; }
+  .form-card { border-radius: 18px; }
+  .section-title { font-size: 0.8rem; gap: 0.6rem; }
+  .header-icon { width: 70px; height: 70px; }
+  .header-icon mat-icon { font-size: 34px; width: 34px; height: 34px; }
+  .submit-button { height: 56px; font-size: 0.95rem !important; }
+  ::ng-deep .mat-mdc-chip { font-size: 13px !important; padding: 7px 12px !important; }
+}
+
+
+
+/* ─── ENTRY ANIMATION ────────────────────────────────────────── */
+@keyframes datePickerReveal {
+  0%   { opacity: 0; transform: translateY(-16px) scale(0.94); filter: blur(4px); }
+  60%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes headerShimmer {
+  0%   { transform: translateX(-100%) skewX(-15deg); }
+  100% { transform: translateX(250%) skewX(-15deg); }
+}
+
+@keyframes todayPulse {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.2); }
+  50%       { box-shadow: 0 0 0 6px rgba(249, 115, 22, 0.12), 0 0 16px rgba(249, 115, 22, 0.2); }
+}
+
+@keyframes selectedPop {
+  0%   { transform: scale(0.7); opacity: 0; }
+  70%  { transform: scale(1.12); }
+  100% { transform: scale(1);   opacity: 1; }
+}
+
+
+/* ─── OVERLAY PANE  (light) ───────────────────────────────────── */
+::ng-deep .cdk-overlay-pane:has(.mat-datepicker-content) {
+  background: transparent !important;
+  border-radius: 28px !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  transform: translateZ(0) !important;
+  isolation: isolate !important;
+}
+
+/* ─── DATEPICKER POPUP WRAPPER (light) ───────────────────────── */
+::ng-deep .mat-datepicker-content {
+  background: rgba(255, 255, 255, 0.96) !important;
+  backdrop-filter: blur(24px) saturate(200%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(200%) !important;
+  border-radius: 24px !important;
+  border: 1.5px solid rgba(46, 93, 232, 0.15) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.8) inset,
+    0 4px 6px -1px rgba(13, 31, 110, 0.06),
+    0 24px 60px -8px rgba(13, 31, 110, 0.22),
+    0 12px 28px -6px rgba(245, 98, 15, 0.12) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  animation: datePickerReveal 0.38s cubic-bezier(0.22, 1, 0.36, 1) both !important;
+  position: relative !important;
+  z-index: 1052 !important;
+}
+::ng-deep .mat-datepicker-content::before,
+::ng-deep .mat-datepicker-content::after { display: none !important; }
+
+/* ─── CALENDAR SHELL ─────────────────────────────────────────── */
+::ng-deep .mat-calendar {
+  font-family: 'DM Sans', 'Inter', sans-serif !important;
+  background: transparent !important;
+  width: 308px !important;
+  padding: 0 !important;
+}
+
+/* ─── CALENDAR HEADER ────────────────────────────────────────── */
+::ng-deep .mat-calendar-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 45%, #2563eb 70%, #f97316 130%) !important;
+  padding: 2px 10px !important;
+  border-radius: 0 !important;
+  position: relative !important;
+  overflow: hidden !important;
+  z-index: 2 !important;
+}
+
+/* Shimmer sweep across the header */
+::ng-deep .mat-calendar-header::after {
+  content: '' !important;
+  position: absolute !important;
+  top: 0; left: 0 !important;
+  width: 60%; height: 100% !important;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.18) 50%,
+    transparent 100%
+  ) !important;
+  animation: headerShimmer 4s ease-in-out infinite !important;
+  pointer-events: none !important;
+}
+
+/* Month/year period button */
+::ng-deep .mat-calendar-header .mat-calendar-period-button {
+  color: #ffffff !important;
+  font-family: 'Courier New', monospace !important;
+  font-size: 17px !important;
+  font-weight: 800 !important;
+  letter-spacing: 0.04em !important;
+  text-transform: uppercase !important;
+  padding: 6px 12px !important;
+  border-radius: 10px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.25s ease !important;
+  position: relative; z-index: 3 !important;
+}
+::ng-deep .mat-calendar-header .mat-calendar-period-button:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+  transform: scale(1.04) !important;
+}
+
+/* Arrow icon inside period button */
+::ng-deep .mat-calendar-header .mat-calendar-arrow {
+  fill: rgba(255, 255, 255, 0.85) !important;
+  margin-left: 4px !important;
+}
+
+/* Prev / Next nav buttons */
+::ng-deep .mat-calendar-header .mat-calendar-previous-button,
+::ng-deep .mat-calendar-header .mat-calendar-next-button {
+  color: rgba(255, 255, 255, 0.9) !important;
+  border-radius: 50% !important;
+  width: 40px !important; height: 40px !important;
+  background: rgba(255, 255, 255, 0.12) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  position: relative; z-index: 3 !important;
+}
+::ng-deep .mat-calendar-header .mat-calendar-previous-button:hover,
+::ng-deep .mat-calendar-header .mat-calendar-next-button:hover {
+  background: rgba(255, 255, 255, 0.28) !important;
+  transform: scale(1) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* ─── CALENDAR BODY AREA ─────────────────────────────────────── */
+::ng-deep .mat-calendar-content {
+  background: transparent !important;
+  padding: 16px 16px 20px !important;
+}
+::ng-deep .mat-calendar-body,
+::ng-deep .mat-calendar-table {
+  background: transparent !important;
+}
+
+/* Day-of-week header labels */
+::ng-deep .mat-calendar-table-header th {
+  color: #94a3b8 !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  padding: 0 0 10px !important;
+}
+::ng-deep .mat-calendar-table-header-divider::after { display: none !important; }
+
+/* ─── DATE CELLS ─────────────────────────────────────────────── */
+::ng-deep .mat-calendar-body-cell {
+  background: transparent !important;
+  padding: 3px !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+  width: 36px !important; height: 36px !important;
+  line-height: 36px !important;
+  border-radius: 10px !important;         /* rounded-square, not circle */
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: #1e293b !important;
+  background: transparent !important;
+  transition:
+    background 0.22s ease,
+    color 0.22s ease,
+    transform 0.22s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.22s ease !important;
+  position: relative !important;
+  z-index: 1 !important;
+}
+/* Remove pseudo-element hacks */
+::ng-deep .mat-calendar-body-cell-content::before { display: none !important; }
+
+/* Hover */
+::ng-deep .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+  background: rgba(46, 93, 232, 0.1) !important;
+  color: #1e40af !important;
+  transform: scale(1.12) !important;
+  box-shadow: 0 4px 12px rgba(46, 93, 232, 0.18) !important;
+  font-weight: 700 !important;
+}
+
+/* ─── SELECTED DATE ───────────────────────────────────────────── */
+::ng-deep .mat-calendar-body-selected {
+  background: linear-gradient(135deg, #1e40af 0%, #2563eb 50%, #f97316 150%) !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  border-radius: 10px !important;
+  box-shadow:
+    0 6px 20px rgba(37, 99, 235, 0.45),
+    0 2px 8px rgba(249, 115, 22, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3) !important;
+  transform: scale(1.08) !important;
+  animation: selectedPop 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both !important;
+}
+
+/* ─── TODAY'S DATE ────────────────────────────────────────────── */
+::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  background: transparent !important;
+  border: 2px solid #f97316 !important;
+  color: #ea580c !important;
+  font-weight: 700 !important;
+  border-radius: 10px !important;
+  animation: todayPulse 2.5s ease-in-out infinite !important;
+}
+
+/* ─── DISABLED DATES ─────────────────────────────────────────── */
+::ng-deep .mat-calendar-body-disabled .mat-calendar-body-cell-content {
+  color: #cbd5e1 !important;
+  cursor: not-allowed !important;
+  font-weight: 400 !important;
+}
+
+/* ─── DATEPICKER TOGGLE ICON ─────────────────────────────────── */
+::ng-deep .mat-datepicker-toggle {
+  color: #94a3b8 !important;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+::ng-deep .mat-mdc-form-field:hover .mat-datepicker-toggle {
+  color: #2563eb !important;
+  transform: scale(1.12) rotate(8deg) !important;
+}
+::ng-deep .mat-mdc-form-field.mat-focused .mat-datepicker-toggle,
+::ng-deep .mat-datepicker-toggle-active {
+  color: #1e40af !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   DARK THEME — DATEPICKER
+   ═══════════════════════════════════════════════════════════════ */
+
+/* Overlay pane */
+.dark-theme ::ng-deep .cdk-overlay-pane:has(.mat-datepicker-content) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Popup shell */
+.dark-theme ::ng-deep .mat-datepicker-content {
+  background: rgba(15, 23, 42, 0.95) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1.5px solid rgba(99, 132, 255, 0.2) !important;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 24px 60px -8px rgba(0, 0, 0, 0.6),
+    0 12px 28px -6px rgba(249, 115, 22, 0.15) !important;
+}
+
+/* Header */
+.dark-theme ::ng-deep .mat-calendar-header {
+  background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #ea580c 160%) !important;
+  border-bottom: 1px solid rgba(99, 132, 255, 0.15) !important;
+}
+
+/* Day labels */
+.dark-theme ::ng-deep .mat-calendar-table-header th {
+  color: #475569 !important;
+}
+
+/* Cell content */
+.dark-theme ::ng-deep .mat-calendar-body-cell-content {
+  color: #e2e8f0 !important;
+}
+
+/* Hover */
+.dark-theme ::ng-deep .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover .mat-calendar-body-cell-content:not(.mat-calendar-body-selected) {
+  background: rgba(99, 132, 255, 0.15) !important;
+  color: #93bbff !important;
+  box-shadow: 0 4px 12px rgba(99, 132, 255, 0.2) !important;
+}
+
+/* Selected */
+.dark-theme ::ng-deep .mat-calendar-body-selected {
+  background: linear-gradient(135deg, #2563eb 0%, #3b82f6 50%, #f97316 160%) !important;
+  box-shadow:
+    0 6px 20px rgba(59, 130, 246, 0.5),
+    0 2px 8px rgba(249, 115, 22, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2) !important;
+}
+
+/* Today */
+.dark-theme ::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: #f97316 !important;
+  color: #fb923c !important;
+}
+
+/* Disabled */
+.dark-theme ::ng-deep .mat-calendar-body-disabled .mat-calendar-body-cell-content {
+  color: #334155 !important;
+}
+
+/* Toggle */
+.dark-theme ::ng-deep .mat-datepicker-toggle {
+  color: #475569 !important;
+}
+.dark-theme ::ng-deep .mat-mdc-form-field:hover .mat-datepicker-toggle {
+  color: #93bbff !important;
+}
+.dark-theme ::ng-deep .mat-datepicker-toggle-active {
+  color: #60a5fa !important;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════
+   DATEPICKER 
+   ═══════════════════════════════════════════════════════════════ */
+
+.mat-datepicker-content.solid-background-panel {
+  background: #ffffff !important;
+  border-radius: 16px !important;
+  border: 1px solid #e5e7eb !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1) !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar {
+  background: transparent !important;
+  padding: 0 !important;
+  width: 308px !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-header {
+  background: #f9fafb !important;
+  padding: 20px !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  border-bottom: 1px solid #e5e7eb !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-period-button {
+  color: #111827 !important;
+  background: transparent !important;
+  border: none !important;
+  font-weight: 600 !important;
+  font-size: 15px !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-period-button:hover {
+  background: #f3f4f6 !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-previous-button,
+.mat-datepicker-content.solid-background-panel .mat-calendar-next-button {
+  color: #6b7280 !important;
+  background: transparent !important;
+  border: none !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-previous-button:hover,
+.mat-datepicker-content.solid-background-panel .mat-calendar-next-button:hover {
+  background: #f3f4f6 !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-content { 
+  padding: 16px !important; 
+  background: #ffffff !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-table-header th { 
+  color: #9ca3af !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-body-cell-content {
+  width: 36px !important; 
+  height: 36px !important; 
+  line-height: 36px !important;
+  border-radius: 8px !important; 
+  color: #374151 !important; 
+  background: transparent !important;
+  font-weight: 500 !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-body-cell:hover .mat-calendar-body-cell-content {
+  background: #f3f4f6 !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-body-selected {
+  background: #2563eb !important;
+  color: #ffffff !important; 
+  border-radius: 8px !important;
+}
+.mat-datepicker-content.solid-background-panel .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border: 1px solid #2563eb !important; 
+  color: #2563eb !important; 
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+}
+
+/* Dark variant */
+.dark-theme .mat-datepicker-content.solid-background-panel {
+  background: #1f2937 !important;
+  border-color: #374151 !important;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5) !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-header {
+  background: #111827 !important;
+  border-bottom-color: #374151 !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-period-button {
+  color: #f9fafb !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-period-button:hover {
+  background: #374151 !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-previous-button,
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-next-button {
+  color: #9ca3af !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-previous-button:hover,
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-next-button:hover {
+  background: #374151 !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-content {
+  background: #1f2937 !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-body-cell-content {
+  color: #e5e7eb !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-body-cell:hover .mat-calendar-body-cell-content {
+  background: #374151 !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-body-selected {
+  background: #2563eb !important;
+  color: #ffffff !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-body-today:not(.mat-calendar-body-selected) {
+  border-color: #3b82f6 !important; 
+  color: #60a5fa !important;
+}
+.dark-theme .mat-datepicker-content.solid-background-panel .mat-calendar-table-header th { 
+  color: #6b7280 !important; 
+}

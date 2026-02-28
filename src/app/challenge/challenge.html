@@ -1,0 +1,210 @@
+<div class="page-container" [class.dark-theme]="isDarkMode()">
+    <div class="theme-toggle-container">
+        <mat-slide-toggle 
+            [checked]="isDarkMode()" 
+            (change)="toggleTheme()"
+            color="primary">
+            {{ isDarkMode() ? 'Dark' : 'Light' }} Mode
+        </mat-slide-toggle>
+    </div>
+
+    <div class="page-header">
+        <div class="header-icon">
+        </div>
+        <h1 class="page-title">Code Geeks Membership</h1>
+        <p class="page-subtitle">Join the elite community of passionate developers</p>
+    </div>
+
+    <mat-card class="form-card">
+        <mat-card-content>
+            <form [formGroup]="formdata" (ngSubmit)="onClickSubmit()">
+
+                <!-- Personal Information Section -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        Personal Information
+                    </h2>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Full Name</mat-label>
+                        <input matInput placeholder="John Doe" formControlName="fullName">
+                        @if (formdata.get('fullName')?.invalid && formdata.get('fullName')?.touched) {
+                            <mat-error>
+                                Full name is required (min 2 characters)
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Username</mat-label>
+                        <input matInput placeholder="codegeek123" formControlName="username">
+                        @if (formdata.get('username')?.invalid && formdata.get('username')?.touched) {
+                            <mat-error>
+                                Username must be at least 3 characters (letters, numbers, underscore only)
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input matInput type="email" placeholder="geek@example.com" formControlName="email">
+                        @if (formdata.get('email')?.invalid && formdata.get('email')?.touched) {
+                            <mat-error>
+                                Please enter a valid email address
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker]="picker" 
+                               [max]="maxDate"
+                               placeholder="MM/DD/YYYY" 
+                               formControlName="birthDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker panelClass="solid-background-panel"></mat-datepicker>
+                        @if (formdata.get('birthDate')?.hasError('required') && formdata.get('birthDate')?.touched) {
+                            <mat-error>
+                                Date of birth is required
+                            </mat-error>
+                        }
+                        @if (formdata.get('birthDate')?.hasError('tooYoung')) {
+                            <mat-error>
+                                You must be born in 2006 or earlier to join
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <!-- Security Section -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        Security
+                    </h2>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Password</mat-label>
+                        <input matInput type="password" 
+                               placeholder="Enter password" 
+                               formControlName="password"
+                               matTooltip="Must start with a letter, alphanumeric only, min 8 characters">
+                        @if (formdata.get('password')?.invalid && formdata.get('password')?.touched) {
+                            <mat-error>
+                                @for (error of getPasswordErrors(); track error) {
+                                    <div>• {{ error }}</div>
+                                }
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Confirm Password</mat-label>
+                        <input matInput type="password" 
+                               placeholder="Re-enter password" 
+                               formControlName="confirmPassword">
+                        @if (formdata.get('confirmPassword')?.hasError('passwordMismatch') && formdata.get('confirmPassword')?.touched) {
+                            <mat-error>
+                                Passwords do not match
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <!-- Developer Profile Section -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        Developer Profile
+                    </h2>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Primary Coding Language</mat-label>
+                        <mat-select formControlName="primaryLanguage" placeholder="Select language" panelClass="solid-background-panel">
+                            @for (language of codingLanguages; track language) {
+                                <mat-option [value]="language">{{ language }}</mat-option>
+                            }
+                        </mat-select>
+                        @if (formdata.get('primaryLanguage')?.hasError('required') && formdata.get('primaryLanguage')?.touched) {
+                            <mat-error>
+                                Please select your primary language
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>Experience Level</mat-label>
+                        <mat-select formControlName="experienceLevel" placeholder="Select experience" panelClass="solid-background-panel">
+                            @for (level of experienceLevels; track level) {
+                                <mat-option [value]="level">{{ level }}</mat-option>
+                            }
+                        </mat-select>
+                        @if (formdata.get('experienceLevel')?.hasError('required') && formdata.get('experienceLevel')?.touched) {
+                            <mat-error>
+                                Please select your experience level
+                            </mat-error>
+                        }
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <mat-label>GitHub Profile (Optional)</mat-label>
+                        <input matInput placeholder="https://github.com/username" formControlName="githubProfile">
+                        @if (formdata.get('githubProfile')?.hasError('pattern') && formdata.get('githubProfile')?.touched) {
+                            <mat-error>
+                                Please enter a valid GitHub profile URL
+                            </mat-error>
+                        }
+                    </mat-form-field>
+                </div>
+
+                <!-- Interests Section -->
+                <div class="form-section">
+                    <h2 class="section-title">
+                        Areas of Interest
+                    </h2>
+
+                    <div class="interests-container">
+                        <mat-chip-listbox 
+                            formControlName="interests" 
+                            aria-label="Select interests"
+                            multiple>
+                            @for (interest of availableInterests; track interest) {
+                                <mat-chip-option [value]="interest">
+                                    {{ interest }}
+                                </mat-chip-option>
+                            }
+                        </mat-chip-listbox>
+                        @if (formdata.get('interests')?.hasError('required') && formdata.get('interests')?.touched) {
+                            <div class="error-message">
+                                Please select at least one area of interest
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Terms and Submit -->
+                <div class="form-section terms-section">
+                    <div class="terms-checkbox">
+                        <mat-checkbox formControlName="agreeToTerms" color="primary">
+                            I agree to the <a href="#" class="terms-link">Terms and Conditions</a> 
+                            and <a href="#" class="terms-link">Privacy Policy</a>
+                        </mat-checkbox>
+                        @if (formdata.get('agreeToTerms')?.hasError('required') && submitted) {
+                            <div class="error-message">
+                                You must agree to the terms and conditions
+                            </div>
+                        }
+                    </div>
+
+                    <div class="button-container">
+                        <button mat-raised-button 
+                                color="primary" 
+                                type="submit"
+                                class="submit-button">
+                            Join Code Geeks
+                        </button>
+                    </div>
+                </div>
+
+            </form>
+        </mat-card-content>
+    </mat-card>
+</div>
